@@ -1,0 +1,258 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Surprise</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:'Poppins', sans-serif;
+    }
+
+    body{
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background: linear-gradient(270deg, #ff758c, #ff7eb3, #fad0c4);
+        background-size:600% 600%;
+        animation: gradientMove 10s ease infinite;
+        overflow:hidden;
+    }
+
+    @keyframes gradientMove{
+        0%{background-position:0% 50%;}
+        50%{background-position:100% 50%;}
+        100%{background-position:0% 50%;}
+    }
+
+    /* Floating hearts */
+    .heart{
+        position:absolute;
+        color:#ffffffaa;
+        font-size:20px;
+        animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp{
+        from{
+            transform:translateY(100vh) scale(0.5);
+            opacity:1;
+        }
+        to{
+            transform:translateY(-10vh) scale(1.2);
+            opacity:0;
+        }
+    }
+
+    .card{
+        background:rgba(255,255,255,0.9);
+        backdrop-filter: blur(10px);
+        padding:45px;
+        border-radius:25px;
+        text-align:center;
+        box-shadow:0 15px 40px rgba(0,0,0,0.2);
+        max-width:420px;
+        position:relative;
+        z-index:2;
+        animation:floatCard 4s ease-in-out infinite;
+        overflow-y:auto;
+        max-height:90vh;
+    }
+
+    @keyframes floatCard{
+        0%,100%{transform:translateY(0);}
+        50%{transform:translateY(-12px);}
+    }
+
+    h1{
+        color:#ff4d6d;
+        margin-bottom:10px;
+        font-weight:600;
+    }
+
+    p{
+        color:#555;
+        margin-bottom:15px;
+        font-size:16px;
+        line-height:1.5;
+        text-align:left;
+    }
+
+    .main-heart{
+        font-size:70px;
+        animation:beat 1s infinite;
+        display:inline-block;
+        margin-bottom:10px;
+    }
+
+    @keyframes beat{
+        0%,100%{transform:scale(1);}
+        50%{transform:scale(1.25);}
+    }
+
+    button{
+        padding:12px 28px;
+        border:none;
+        border-radius:30px;
+        background:linear-gradient(45deg,#ff4d6d,#ff758c);
+        color:white;
+        font-size:16px;
+        cursor:pointer;
+        transition:0.3s;
+        margin:5px;
+    }
+
+    button:hover{
+        transform:scale(1.08);
+        box-shadow:0 5px 15px rgba(255,77,109,0.4);
+    }
+
+    .hidden-content{
+        margin-top:20px;
+        display:none;
+        animation:fadeIn 1s ease forwards;
+    }
+
+    /* Add fade-out animation for closing */
+    @keyframes fadeOut{
+        from{opacity:1; transform:translateY(0);} 
+        to{opacity:0; transform:translateY(10px);} 
+    }
+
+    .hidden-message{
+        color:#ff4d6d;
+        font-weight:600;
+        margin-top:15px;
+        text-align:center;
+    }
+
+    @keyframes fadeIn{
+        from{opacity:0; transform:translateY(10px);} 
+        to{opacity:1; transform:translateY(0);} 
+    }
+
+    .audio-status{
+        font-size:14px;
+        color:#777;
+        margin-top:10px;
+    }
+
+    /* Image styling */
+    .card-image {
+        max-width: 165px;
+        width: 100%;
+        border-radius: 15px;
+        margin: 15px 0;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .card-image:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+</style>
+
+</head>
+<body><div class="card">
+    <div class="main-heart">❤</div>
+    <h1>Happy Valentine's Day!</h1>
+    
+    <!-- Hidden content section -->
+    <div class="hidden-content" id="fullContent">
+        <img src="meow.jpg" alt="Special moment" class="card-image">
+        <p>Happy Valentine’s Day – I know this might feel a little out of the blue, but I wanted to take this day to say how much I’ve been enjoying getting to know you.</p>
+        <p>These past months talking to you have been some of the best parts of my days. I look forward to every message we send, every notes we put, and every little story we share with each other. Whether we’re talking about our day, new chikas, or our hopes for the future – I just love how easy it is to be myself around you.</p>
+        <p>I notice little things about you too – like how your face lights up when you talk about the things you love, how you care so much about the people in your life, and how you always find a way to make me feel heard. You’re smart, kind, beautiful, majestic, aurafull, magnificent, good scent, cute eyelashes,  and have this way of making even the most ordinary conversations feel special.</p>
+        <p>I know we’re still taking things one step at a time, and I don’t want to rush anything at all. I just wanted you to know that you’ve become someone really important to me, and I’m so grateful we crossed paths. Whatever happens between us, I’m happy to have you in my life.</p>
+        <p>Thank you for being such an amazing person to talk to. I hope your Valentine’s Day is as wonderful as you are.</p>
+        <div class="hidden-message">
+            You mean more than you know. 🌸
+        </div>
+    </div>
+
+    <button onclick="toggleSurprise()" id="surpriseBtn">Click for a Surprise</button>
+    <button onclick="toggleAudio()">Play Background Music</button>
+    <div class="audio-status" id="audioStatus">Click to play music</div>
+</div>
+
+<script>
+    // Track if content is open or closed
+    let isContentOpen = false;
+    const content = document.getElementById("fullContent");
+    const btn = document.getElementById("surpriseBtn");
+
+    function toggleSurprise(){
+        if(!isContentOpen){
+            // Open content
+            content.style.display = "block";
+            content.style.animation = "fadeIn 1s ease forwards";
+            btn.textContent = "Hide the Surprise";
+            isContentOpen = true;
+        } else {
+            // Close content with fade-out effect
+            content.style.animation = "fadeOut 0.5s ease forwards";
+            // Wait for animation to finish before hiding
+            setTimeout(() => {
+                content.style.display = "none";
+            }, 500);
+            btn.textContent = "Click for a Surprise";
+            isContentOpen = false;
+        }
+    }
+
+    // Generate floating hearts
+    function createHeart(){
+        const heart=document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML="❤";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(Math.random()*20+10)+"px";
+        heart.style.animationDuration=(Math.random()*3+3)+"s";
+        document.body.appendChild(heart);
+
+        setTimeout(()=>{
+            heart.remove();
+        },6000);
+    }
+
+    setInterval(createHeart,300);
+</script>
+
+<audio id="bgMusic" loop>
+    <source src="kang.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+
+
+<script>
+const music = document.getElementById("bgMusic");
+const audioStatus = document.getElementById("audioStatus");
+let isAudioPlaying = false;
+
+// Set start time
+music.currentTime = 62;
+
+function toggleAudio() {
+    if (isAudioPlaying) {
+        music.pause();
+        audioStatus.textContent = "Music paused - click to resume";
+        document.querySelector('button[onclick="toggleAudio()"]').textContent = "Play Background Music";
+    } else {
+        music.play().then(() => {
+            audioStatus.textContent = "Music playing ♫";
+            document.querySelector('button[onclick="toggleAudio()"]').textContent = "Pause Music";
+        }).catch(err => {
+            audioStatus.textContent = "Click again to play music";
+            console.log("Audio play issue:", err);
+        });
+    }
+    isAudioPlaying = !isAudioPlaying;
+}
+</script>
+
+</body>
+</html>
